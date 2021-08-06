@@ -35,8 +35,7 @@ function isManager(id) {
   return employees.some((employee) => employee.managers.includes(id));
 }
 
-
-function addEmployee(id, firstName, lastName, managers, responsibleFor) {
+function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
   const newEmployee = {
     id,
     firstName,
@@ -44,14 +43,19 @@ function addEmployee(id, firstName, lastName, managers, responsibleFor) {
     managers,
     responsibleFor,
   };
-  console.log(newEmployee);
   return employees.push(newEmployee);
 }
-/* console.log() // consolog me retorna 9 ao ser passado na L51. Não sei pq.  */
-addEmployee('123', 'Thales', 'Lima', [], []);
 
 function countAnimals(specie) {
-  // seu código aqui
+  if (!specie) {
+    const animal = species.reduce((acc, cur) => {
+      acc[cur.name] = cur.residents.length;
+      return acc;
+    }, {});
+    return animal;
+  }
+  return species
+    .find((animal) => animal.name === specie).residents.length;
 }
 
 function calculateEntry(entrants) {
