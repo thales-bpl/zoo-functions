@@ -1,5 +1,11 @@
-const { species } = require('./data');
 const data = require('./data');
+const { species } = require('./data');
+const { employees } = require('./data');
+const { hours } = require('./data');
+const { prices } = require('./data');
+
+/* console.log(prices.Adult);
+console.log(hours); */
 
 function getSpeciesByIds(...ids) {
   return species.filter((animalId, index) => animalId.id === ids[index]);
@@ -12,21 +18,37 @@ function getAnimalsOlderThan(animal, age) {
 }
 
 function getEmployeeByName(employeeName) {
-  // seu código aqui
+  if (!employeeName) {
+    return {};
+  }
+  return employees
+    .find(
+      (employee) => employeeName === employee.firstName || employeeName === employee.lastName,
+    );
 }
 
 function createEmployee(personalInfo, associatedWith) {
-  const newEmployee = { ...personalInfo, ...associatedWith };
-  return newEmployee;
+  return { ...personalInfo, ...associatedWith };
 }
 
 function isManager(id) {
-  // seu código aqui
+  return employees.some((employee) => employee.managers.includes(id));
 }
 
+
 function addEmployee(id, firstName, lastName, managers, responsibleFor) {
-  // seu código aqui
+  const newEmployee = {
+    id,
+    firstName,
+    lastName,
+    managers,
+    responsibleFor,
+  };
+  console.log(newEmployee);
+  return employees.push(newEmployee);
 }
+/* console.log() // consolog me retorna 9 ao ser passado na L51. Não sei pq.  */
+addEmployee('123', 'Thales', 'Lima', [], []);
 
 function countAnimals(specie) {
   // seu código aqui
