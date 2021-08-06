@@ -59,7 +59,12 @@ function countAnimals(specie) {
 }
 
 function calculateEntry(entrants) {
-  // seu código aqui
+  if (!entrants) return 0;
+  const { Adult = 0, Child = 0, Senior = 0 } = entrants;
+  const adultPrices = prices.Adult * Adult;
+  const childPrices = prices.Child * Child;
+  const seniorPrices = prices.Senior * Senior;
+  return adultPrices + childPrices + seniorPrices;
 }
 
 function getAnimalMap(options) {
