@@ -72,7 +72,8 @@ function getAnimalMap(options) {
 }
 
 function getSchedule(dayName) {
-  // seu código aqui
+  const fullSchedule = `Open from ${opening}am until ${closing}pm`;
+  if (!dayName) return fullSchedule;
 }
 
 function getOldestFromFirstSpecies(id) {
