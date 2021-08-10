@@ -6,4 +6,4 @@ const { prices } = require('./data');
 
 module.exports = {
 
-}
+};

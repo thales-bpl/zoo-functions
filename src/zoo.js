@@ -76,31 +76,30 @@ function fullSchedule(parameter) {
 }
 
 function getSchedule(dayName) {
-  const schedule = Object.entries(hours);
-  const week = fullSchedule(schedule);
-  if (!dayName) return week;
-  const workWeek = Object.entries(week);
-  const targetDay = workWeek.find((day) => day[0] === dayName);
-  return { [dayName]: targetDay[1] };
+  const schedule = Object.entries(hours); // Obj hours into Array hours
+  const weekSchedule = fullSchedule(schedule); // array into obj com horários
+  if (!dayName) return weekSchedule;
+  const daySchedule = Object.entries(weekSchedule).find((day) => day[0] === dayName); // seleciona schedule do dia-argumento
+  return { [dayName]: daySchedule[1] };
 }
 
+const sortByOlder = (acc, cur) => {
+  if (acc.age > cur.age) return acc;
+  return cur;
+};
+
 function getOldestFromFirstSpecies(id) {
-  const firstAnimal = employees
-    .find((employee) => employee.id === id)
-    .responsibleFor[0];
-  const specie = species.find((animal) => animal.id === firstAnimal);
-  const oldestAnimal = specie.residents.reduce((acc, cur) => {
-    if (acc.age > cur.age) return acc;
-    return cur;
-  });
+  const firstAnimal = employees.find((employee) => employee.id === id).responsibleFor[0];
+  const oldestAnimal = species.find((animal) => animal.id === firstAnimal)
+    .residents.reduce(sortByOlder);
   return [oldestAnimal.name, oldestAnimal.sex, oldestAnimal.age];
 }
 
 function increasePrices(percentage) {
-  const actualPercent = percentage / 100;
-  prices.Adult = Math.round((prices.Adult + prices.Adult * actualPercent) * 100) / 100;
-  prices.Child = Math.round((prices.Child + prices.Child * actualPercent) * 100) / 100;
-  prices.Senior = Math.round((prices.Senior + prices.Senior * actualPercent) * 100) / 100;
+  const actualPercent = 1 + percentage / 100;
+  prices.Adult = Math.round((prices.Adult * actualPercent) * 100) / 100;
+  prices.Child = Math.round((prices.Child * actualPercent) * 100) / 100;
+  prices.Senior = Math.round((prices.Senior * actualPercent) * 100) / 100;
 }
 
 function getEmployeeCoverage(idOrName) {
