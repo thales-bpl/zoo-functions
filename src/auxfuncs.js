@@ -4,36 +4,38 @@ const { employees } = require('./data');
 const { hours } = require('./data');
 const { prices } = require('./data');
 
-const scheduleReducer = (acc, cur) => {
-  if (cur[1].open === 0 || cur[1].close === 0) {
-    acc[cur[0]] = 'CLOSED';
-    return acc;
-  }
-  acc[cur[0]] = `Open from ${cur[1].open}am until ${(cur[1].close - 12)}pm`;
-  return acc;
-};
-
-function fullSchedule(parameter) {
-  const weekDays = parameter.reduce(scheduleReducer, {});
-  return weekDays;
+function getOldestFromFirstSpecies(id) {
+  const firstAnimal = employees
+    .find((employee) => employee.id === id)
+    .responsibleFor[0];
+  const specie = species.find((animal) => animal.id === firstAnimal);
+  const oldestAnimal = specie.residents.reduce((acc, cur) => {
+    if (acc.age > cur.age) return acc;
+    return cur;
+  });
+  return [oldestAnimal.name, oldestAnimal.sex, oldestAnimal.age];
 }
-
-function getSchedule(dayName) {
-  const schedule = Object.entries(hours);
-  const week = fullSchedule(schedule);
-  const workWeek = Object.entries(week);
-  if (!dayName) return week;
-  const targetDay = workWeek.find((day) => day[0] === dayName);
-  return { [dayName]: targetDay[1] };
-}
-
-console.log(getSchedule('Monday'));
+console.log(getOldestFromFirstSpecies('9e7d4524-363c-416a-8759-8aa7e50c0992'));
+/* getOldestFromFirstSpecies('9e7d4524-363c-416a-8759-8aa7e50c0992'); */
 
 
 
+
+/* const managedAnimal = species.find((animalId) => animalId.id === responsible[0]);
+
+const manager = employees.find((name) => name.id === id); 
+  const responsible = manager.responsibleFor;
+
+const compareAges = managedAnimal.residents.reduce((oldest, tested) => {
+  if (oldest.age > tested.age) {
+    return oldest;
+  } return tested;
+});
+return [compareAges.name, compareAges.sex, compareAges.age];
+ */
 
 
 
 module.exports = {
-  fullSchedule,
+
 }
