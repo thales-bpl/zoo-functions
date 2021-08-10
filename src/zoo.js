@@ -18,13 +18,11 @@ function getAnimalsOlderThan(animal, age) {
 }
 
 function getEmployeeByName(employeeName) {
-  if (!employeeName) {
-    return {};
-  }
-  return employees
-    .find(
-      (employee) => employeeName === employee.firstName || employeeName === employee.lastName,
-    );
+  const verifier = (!employeeName)
+    ? {}
+    : employees.find((employee) => employeeName === employee.firstName
+    || employeeName === employee.lastName);
+  return verifier;
 }
 
 function createEmployee(personalInfo, associatedWith) {
@@ -36,26 +34,19 @@ function isManager(id) {
 }
 
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
-  const newEmployee = {
-    id,
-    firstName,
-    lastName,
-    managers,
-    responsibleFor,
-  };
-  return employees.push(newEmployee);
+  return employees.push({ id, firstName, lastName, managers, responsibleFor });
 }
 
+const animalCounter = (acc, cur) => {
+  acc[cur.name] = cur.residents.length;
+  return acc;
+};
+
 function countAnimals(specie) {
-  if (!specie) {
-    const animal = species.reduce((acc, cur) => {
-      acc[cur.name] = cur.residents.length;
-      return acc;
-    }, {});
-    return animal;
-  }
-  return species
-    .find((animal) => animal.name === specie).residents.length;
+  const verifier = (!specie)
+    ? species.reduce(animalCounter, {})
+    : species.find((animal) => animal.name === specie).residents.length;
+  return verifier;
 }
 
 function calculateEntry(entrants) {
@@ -71,9 +62,26 @@ function getAnimalMap(options) {
   // seu código aqui
 }
 
+const scheduleReducer = (acc, cur) => {
+  if (cur[1].open === 0 || cur[1].close === 0) {
+    acc[cur[0]] = 'CLOSED';
+    return acc;
+  }
+  acc[cur[0]] = `Open from ${cur[1].open}am until ${(cur[1].close - 12)}pm`;
+  return acc;
+};
+
+function fullSchedule(parameter) {
+  return parameter.reduce(scheduleReducer, {});
+}
+
 function getSchedule(dayName) {
-  const fullSchedule = `Open from ${opening}am until ${closing}pm`;
-  if (!dayName) return fullSchedule;
+  const schedule = Object.entries(hours);
+  const week = fullSchedule(schedule);
+  if (!dayName) return week;
+  const workWeek = Object.entries(week);
+  const targetDay = workWeek.find((day) => day[0] === dayName);
+  return { [dayName]: targetDay[1] };
 }
 
 function getOldestFromFirstSpecies(id) {
