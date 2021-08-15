@@ -52,10 +52,10 @@ function countAnimals(specie) {
 function calculateEntry(entrants) {
   if (!entrants) return 0;
   const { Adult = 0, Child = 0, Senior = 0 } = entrants;
-  const adultPrices = prices.Adult * Adult;
-  const childPrices = prices.Child * Child;
-  const seniorPrices = prices.Senior * Senior;
-  return adultPrices + childPrices + seniorPrices;
+  const adultEntry = prices.Adult * Adult;
+  const childEntry = prices.Child * Child;
+  const seniorEntry = prices.Senior * Senior;
+  return adultEntry + childEntry + seniorEntry;
 }
 
 function getAnimalMap(options) {
@@ -71,13 +71,13 @@ const scheduleReducer = (acc, cur) => {
   return acc;
 };
 
-function fullSchedule(parameter) {
+function scheduleMaker(parameter) {
   return parameter.reduce(scheduleReducer, {});
 }
 
 function getSchedule(dayName) {
-  const schedule = Object.entries(hours); // Obj hours into Array hours
-  const weekSchedule = fullSchedule(schedule); // array into obj com horários
+  const scheduleArray = Object.entries(hours); // Obj hours into Array hours
+  const weekSchedule = scheduleMaker(scheduleArray); // array into obj com horários
   if (!dayName) return weekSchedule;
   const daySchedule = Object.entries(weekSchedule).find((day) => day[0] === dayName); // seleciona schedule do dia-argumento
   return { [dayName]: daySchedule[1] };
@@ -96,11 +96,11 @@ function getOldestFromFirstSpecies(id) {
 }
 
 function increasePrices(percentage) {
-  const actualPercent = 1 + percentage / 100;
+  const increasePercent = 1 + percentage / 100;
   // Arredondar para 2 dígitos - Referência: https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
-  prices.Adult = Math.round((prices.Adult * actualPercent) * 100) / 100;
-  prices.Child = Math.round((prices.Child * actualPercent) * 100) / 100;
-  prices.Senior = Math.round((prices.Senior * actualPercent) * 100) / 100;
+  prices.Adult = Math.round((prices.Adult * increasePercent) * 100) / 100;
+  prices.Child = Math.round((prices.Child * increasePercent) * 100) / 100;
+  prices.Senior = Math.round((prices.Senior * increasePercent) * 100) / 100;
 }
 
 function getEmployeeCoverage(idOrName) {
